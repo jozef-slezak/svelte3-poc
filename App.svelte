@@ -1,5 +1,6 @@
 <script>
-  import { Chip, TextField, Switch } from "smelte";
+  //import { Switch, TextField, Chip } from "smelte";
+  import { Switch } from "./smelte";
 </script>
 
 <style>
@@ -11,5 +12,8 @@
 
 <main>
   <Switch>aaa</Switch>
+ <!--
   <TextField></TextField>
+  <Chip >aaa</Chip>
+ -->
 </main>
