@@ -6,7 +6,7 @@
   import Icon from "../Icon";
 
   let className = "";
-  export {className as class};
+  export { className as class };
   export let outlined = false;
   export let value = null;
   export let label = "";
@@ -27,12 +27,23 @@
   // for outlined button label
   export let bgColor = "white";
   export let iconClass = "";
-
-  let labelDefault = `pt-4 absolute top-0 label-transition block pb-2 px-4 pointer-events-none cursor-text`;
-  let inputDefault = `transition pb-2 pt-6 px-4 rounded-t text-black w-full`;
-  let wrapperDefault = "mt-2 relative pb-6 text-gray-600" + ((select || autocomplete) ? " select" : "");
-  let appendDefault = "absolute right-0 top-0 pb-2 pr-4 pt-4 pointer-events-none text-gray-700";
-  let prependDefault = "absolute left-0 top-0 pointer-events-none text-xs text-gray-700";
+  const labelPadding = "pt-2 pb-2";
+  const inputPadding = "pb-2 pt-6";
+  const vyska = "py-2";
+  const medzera = "mt-0";
+  let labelDefault =
+    labelPadding +
+    ` text-sm absolute top-0 label-transition block px-4 pointer-events-none cursor-text`;
+  let inputDefault =
+    inputPadding + ` text-sm transition px-4 rounded-t text-black w-full`;
+  let wrapperDefault =
+    medzera +
+    " relative pb-6 text-gray-600" +
+    (select || autocomplete ? " select" : "");
+  let appendDefault =
+    "absolute right-0 top-0 pb-2 pr-4 pt-4 pointer-events-none text-gray-700";
+  let prependDefault =
+    "absolute left-0 top-0 pointer-events-none text-xs text-gray-700";
 
   export let add = "";
   export let remove = "";
@@ -44,12 +55,7 @@
   export let appendClasses = appendDefault;
   export let prependClasses = prependDefault;
 
-  const {
-    bg,
-    border,
-    txt,
-    caret,
-  } = utils(color);
+  const { bg, border, txt, caret } = utils(color);
 
   const l = new ClassBuilder(labelClasses, labelDefault);
   const i = new ClassBuilder(inputClasses, inputDefault);
@@ -72,74 +78,83 @@
   $: labelOnTop = placeholder || focused || value;
 
   $: lClasses = l
-      .flush()
-      .add(txt(), focused && !error)
-      .add('label-top text-xs', labelOnTop)
-      .remove('pt-4 pb-2 px-4 px-1 pt-0', labelOnTop && outlined)
-      .add(`ml-3 p-1 pt-0 mt-0 bg-${bgColor}`, labelOnTop && outlined)
-      .remove('px-4', prepend)
-      .add('pr-4 pl-6', prepend)
-      .get();
+    .flush()
+    .add(txt(), focused && !error)
+    .add("label-top text-xs", labelOnTop)
+    .remove(
+      labelPadding + /*pt-4 pb-2*/ " px-4 px-1 pt-0",
+      labelOnTop && outlined
+    )
+    .add(`ml-3 p-1 pt-0 mt-0 bg-${bgColor}`, labelOnTop && outlined)
+    .remove("px-4", prepend)
+    .add("pr-4 pl-6", prepend)
+    .get();
 
   $: iClasses = i
-      .flush()
-      .add(className)
-      .remove('pt-6 pb-2', outlined)
-      .add('border rounded bg-transparent py-4 transition', outlined)
-      .add('border-error-500 caret-error-500', error)
-      .remove(caret(), error)
-      .add(caret(), !error)
-      .add(border(), focused && !error)
-      .add('border-gray-600', !error && !focused)
-      .add('bg-gray-100', !outlined)
-      .add('bg-gray-300', focused && !outlined)
-      .remove('px-4', prepend)
-      .add('pr-4 pl-6', prepend)
-      .add(add)
-      .remove(remove)
-      .replace(replace)
-      .get();
-    
-  $: wrapperClasses, wClasses = (new ClassBuilder(wrapperClasses, wrapperDefault)).get();
-  $: appendClasses, aClasses = (new ClassBuilder(appendClasses, appendDefault)).get();
-  $: prependClasses, pClasses = (new ClassBuilder(prependClasses, prependDefault)).get();
+    .flush()
+    .add(className)
+    .remove(inputPadding /*"pt-6 pb-2"*/, outlined)
+    .add("border rounded bg-transparent transition " + vyska, outlined)
+    .add("border-error-500 caret-error-500", error)
+    .remove(caret(), error)
+    .add(caret(), !error)
+    .add(border(), focused && !error)
+    .add("border-gray-600", !error && !focused)
+    .add("bg-gray-100", !outlined)
+    .add("bg-gray-300", focused && !outlined)
+    .remove("px-4", prepend)
+    .add("pr-4 pl-6", prepend)
+    .add(add)
+    .remove(remove)
+    .replace(replace)
+    .get();
 
-  const props = filterProps([
-    'outlined',
-    'label',
-    'placeholder',
-    'hint',
-    'error',
-    'append',
-    'prepend',
-    'persistentHint',
-    'textarea',
-    'rows',
-    'select',
-    'autocomplete',
-    'noUnderline',
-    'appendReverse',
-    'prependReverse',
-    'color',
-    'bgColor',
-  ], $$props);
+  $: wrapperClasses,
+    (wClasses = new ClassBuilder(wrapperClasses, wrapperDefault).get());
+  $: appendClasses,
+    (aClasses = new ClassBuilder(appendClasses, appendDefault).get());
+  $: prependClasses,
+    (pClasses = new ClassBuilder(prependClasses, prependDefault).get());
+
+  const props = filterProps(
+    [
+      "outlined",
+      "label",
+      "placeholder",
+      "hint",
+      "error",
+      "append",
+      "prepend",
+      "persistentHint",
+      "textarea",
+      "rows",
+      "select",
+      "autocomplete",
+      "noUnderline",
+      "appendReverse",
+      "prependReverse",
+      "color",
+      "bgColor"
+    ],
+    $$props
+  );
 </script>
 
 <style>
-.line {
-  height: 1px;
-}
+  .line {
+    height: 1px;
+  }
 
-.label-top {
-  line-height: 0.05;
-}
-.select {
-  @apply pb-0 cursor-pointer;
-  height: 3.5rem;
-}
-.label-transition {
-  transition: font-size 0.05s, line-height 0.1s;
-}
+  .label-top {
+    line-height: 0.05;
+  }
+  .select {
+    @apply pb-0 cursor-pointer;
+    height: 3.5rem;
+  }
+  .label-transition {
+    transition: font-size 0.05s, line-height 0.1s;
+  }
 </style>
 
 <svelte:window on:click={() => (select ? (focused = false) : null)} />
